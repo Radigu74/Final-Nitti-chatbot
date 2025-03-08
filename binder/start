@@ -1,1 +1,3 @@
-
+#!/bin/bash
+cd python-nitti
+streamlit run final_working_nitti_bot.py
