@@ -1,6 +1,6 @@
 #!/bin/bash
+pip install --upgrade pip
 pip install -r python-nitti/requirements.txt
-pip install streamlit  # Force install Streamlit
 cd python-nitti
 streamlit run final_working_nitti_bot.py
 
