@@ -1,3 +1,5 @@
 #!/bin/bash
 pip install -r python-nitti/requirements.txt
-streamlit run python-nitti/final_working_nitti_bot.py
+cd python-nitti
+streamlit run final_working_nitti_bot.py
+
