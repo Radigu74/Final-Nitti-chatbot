@@ -1,7 +1,6 @@
 #!/bin/bash
-pip install --upgrade pip
-pip install -r python-nitti/requirements.txt
-cd python-nitti
-streamlit run final_working_nitti_bot.py
+pip install -r requirements.txt  # ✅ Installs dependencies
+streamlit run final_working_nitti_bot.py  # ✅ Runs Streamlit from the root
+
 
 
