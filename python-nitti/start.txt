@@ -1,2 +1,0 @@
-panel serve python-nitti/final_working_nitti_bot.py --address=0.0.0.0 --port=8888 --allow-websocket-origin=*
-
