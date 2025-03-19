@@ -1,6 +1,0 @@
-#!/bin/bash
-pip install -r requirements.txt  # ✅ Installs dependencies
-streamlit run final_working_nitti_bot.py  # ✅ Runs Streamlit from the root
-
-
-
