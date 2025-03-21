@@ -5,6 +5,7 @@ import re
 from dotenv import load_dotenv, find_dotenv
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
+import base64
 
 # Load environment variables
 _ = load_dotenv(find_dotenv())
@@ -92,16 +93,25 @@ st.markdown(
 )
 
 # ===========================
-# CUSTOM UI: Header with a customer service icon and title
+# CUSTOM UI: Header with a yellow box around the customer service icon and title
 # ===========================
+def get_base64(file_path):
+    with open(file_path, "rb") as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
+icon_base64 = get_base64("icon.png")
+
 st.markdown(
-    """
-    <div class="header">
-        <img src="https://via.placeholder.com/50.png?text=CS" alt="Customer Service Icon">
-        <h1>Nitti Safety Footwear Chatbot</h1>
+    f"""
+    <div style="background-color: #FFD700; padding: 10px; border-radius: 10px; text-align: center;">
+        <img src="data:image/png;base64,{icon_base64}" width="100" style="vertical-align: middle;" alt="Customer Service Icon">
+        <h1 style="display: inline; color: #ffffff; font-family: sans-serif; margin-left: 10px;">
+            Protection, Comfort, Durability, Everyday
+        </h1>
     </div>
     """,
-    unsafe_allow_html=True,
+    unsafe_allow_html=True
 )
 
 # ===========================
@@ -114,10 +124,16 @@ if "chat_enabled" not in st.session_state:
 if "chat_context" not in st.session_state:
     st.session_state.chat_context = [
         {'role': 'system', 'content': """
-You are CustomerserviceBot for Nitti Safety Footwear, an automated service to assist incoming enquiries.
+You are Tim, a Customer service AI Chatbot for Nitti Safety Footwear, an automated service to assist incoming enquiries.
 You first greet the customer, then assist with the enquiry regarding safety shoes,
 and then ask if our sales can reach out to them.
-If you do not know the answer, ask if it is okay that Mr. Harmsen contacts them.
+If you do not know the answer, ask if it is okay that Customer Service contacts them.
+When they request a live chat follow the next steps:
+- first try to have them ask their question to you
+- if they insist then ask their phone number and email and inform them that a callback will be handled as soon as possible but within 1 working day
+- if they want a live chat immediately then provide nitti phonenumber: +6580696879
+- inform them that an email is also possible if there is no reply at: enquiry@nittifootwear.com
+If customer sks address then provide:209 Henderson Road #03-07, Henderson Industrial Park, Singapore 159551 
 You wait to collect all the information, then summarize it and check for a final time if the customer needs anything else.
 Finally, request their phone number and email.
 When asking for a phone number, always check the country code.
@@ -385,7 +401,7 @@ stores = {
     }
 }
 
-# Inject Store Locations into Chat Context (Original Code)
+# Inject Store Locations into Chat Context (Origginal Code)
 if "store_context" not in st.session_state:
     store_info = "\n".join(
         f"{name}: 📍 {info['address']}, 📞 {info['tel']}"
@@ -397,7 +413,7 @@ if "store_context" not in st.session_state:
 
 if "chat_context" not in st.session_state:
     st.session_state.chat_context = [
-        {'role': 'system', 'content': "You are CustomerserviceBot for Nitti Safety Footwear. You assist with store locations and safety footwear inquiries."}
+        {'role': 'system', 'content': "You are Tim, a Customer Service AI Chatbot for Nitti Safety Footwear. You assist with store locations and safety footwear inquiries."}
     ] + st.session_state.store_context
 
 # OpenAI communication function (Original Code)
@@ -416,7 +432,7 @@ def get_completion_from_messages(user_messages, model="gpt-3.5-turbo", temperatu
 # ===========================
 # User Details Input (Original Code)
 # ===========================
-st.title("Nitti Safety Footwear Chatbot")
+st.title("Welcome to Nitti Customer Service")
 st.markdown("📢 **Enter your contact details before chatting:**")
 
 email = st.text_input("Enter your email:", key="email_input")
