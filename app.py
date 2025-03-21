@@ -1,3 +1,49 @@
+Hugging Face's logo
+Hugging Face
+Models
+Datasets
+Spaces
+Posts
+Docs
+Enterprise
+Pricing
+
+
+
+Spaces:
+
+raylor74
+/
+Nitti_Chatbot_python
+
+
+like
+0
+
+Logs
+App
+Files
+Community
+Settings
+Nitti_Chatbot_python
+/
+app.py
+
+raylor74's picture
+raylor74
+Update app.py
+15a5ff5
+verified
+in about 13 hours
+raw
+
+Copy download link
+history
+blame
+edit
+delete
+
+22.2 kB
 import os
 import openai
 import streamlit as st
@@ -12,10 +58,101 @@ _ = load_dotenv(find_dotenv())
 # OpenAI API Key
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
+# temporary for debugging purpose
+print("OPENAI_API_KEY:", os.environ.get("OPENAI_API_KEY"))
+
 # Initialize geocoder
 geolocator = Nominatim(user_agent="nitti_bot")
 
-# Initialize session state
+# ===========================
+# CUSTOM UI: Inject custom CSS for styling using Nitti colors (bright yellow, white, and black)
+# ===========================
+st.markdown(
+    """
+    <style>
+    /* Global Page Background */
+    .reportview-container, .main {
+        background-color: #ffffff;
+    }
+    /* Header styling */
+    .header {
+        background-color: #FFD700; /* Bright yellow */
+        padding: 10px;
+        border-radius: 10px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .header img {
+        width: 50px;
+        height: 50px;
+        vertical-align: middle;
+    }
+    .header h1 {
+        display: inline;
+        margin-left: 10px;
+        vertical-align: middle;
+        color: #000000; /* Black text */
+        font-family: sans-serif;
+    }
+    /* Chat container styling */
+    .chat-container {
+        max-width: 800px;
+        margin: auto;
+        padding: 10px;
+    }
+    /* User message bubble styling */
+    .user-message {
+        background-color: #FFD700; /* bright yellow */
+        color: #000000;
+        padding: 10px;
+        border-radius: 21px;
+        margin: 10px 0;
+        text-align: right;
+        max-width: 70%;
+        float: right;
+        clear: both;
+        font-family: sans-serif;
+    }
+    /* Bot message bubble styling */
+    .bot-message {
+        background-color: #000000; /* black */
+        color: #ffffff;
+        padding: 10px;
+        border-radius: 21px;
+        margin: 10px 0;
+        text-align: left;
+        max-width: 70%;
+        float: left;
+        clear: both;
+        font-family: sans-serif;
+    }
+    /* Input box styling: override Streamlit's default input style */
+    input, textarea {
+        border-radius: 21px !important;
+        border: 2px solid #000000 !important;
+        padding: 10px !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+# ===========================
+# CUSTOM UI: Header with a customer service icon and title
+# ===========================
+st.markdown(
+    """
+    <div class="header">
+        <img src="https://via.placeholder.com/50.png?text=CS" alt="Customer Service Icon">
+        <h1>Nitti Safety Footwear Chatbot</h1>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+# ===========================
+# Original Session State Initialization
+# ===========================
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 if "chat_enabled" not in st.session_state:
@@ -34,7 +171,6 @@ Ensure clarity on product models, accessories, and customer details.
 You respond in a short, friendly, and conversational style, without repeating questions more than twice.
 Orders cannot be placed via this chatbot; instead, collect the user's contact details for a sales follow-up.
 If customers ask where to buy their shoes or any related question to purchasing give them the nearest store and the distance to this store in kilometres. 
-
 The list includes:
 Low cut models:
 - 21281, black, Rating: CE EN 20345:2011 S1P SRC, Model: Lace, Size: 2-14 (UK) / 35-48 (EU), Upper: Leather, Lining: Genuine Cambrelle®, 
@@ -42,51 +178,41 @@ Low cut models:
 - 21381, Rating: CE EN 20345:2011 S1P SRC, Type: Low Cut, Model: Velcro & Ventilated, Size: 2-14 (UK) or 35-48 (EU), Color: Black or Brown, Upper: Leather,
   Lining: Cambrelle®, Outsole: Direct Injection Polyurethane, Suitable for Manufacturing & light industrial
 - 21981 black, Rating: CE EN 20345:2011 S1P SRC, Type: Low Cut, Model: Slip-on, Size: 2-14 (UK) or 35-48 (EU), Color: Black, Upper: Leather, Lining: Cambrelle®, Outsole: Direct Injection Polyurethane, Suitable for Hospitality & kitchens
-
 Mid cut models:
 22281, Color: Black, Rating: CE EN 20345:2011 S1P SRC, Type: Mid Cut, Model: lace, Size: 2-14 (UK) / 35-48 (EU), Upper: Leather, Lining: Cambrelle®, Outsole: Direct Injection Polyurethane, Suitable for: Light & heavy industrial
 22681, Color: Black, Rating: CE EN 20345:2011 S3 SRC, Type: Mid Cut, Model: Zipper, Size: 2-14 (UK) / 35-48 (EU), Upper: Water Resistant Leather, Lining: Cambrelle®, Outsole: Direct Injection Polyurethane, Suitable for: Various industrial environments
 22781, Color: Black and Brown, Rating: CE EN 20345:2011 S3 SRC (Black) | CE EN 20345:2011 S3 SRC* (Brown), Type: Mid Cut, Model: Slip-on / Pull-on, Size: 2-14 (UK) / 35-48 (EU), Upper: Water Resistant Leather, Lining: Cambrelle®, Outsole: Direct Injection Polyurethane, Suitable for: Petrochemical, oil & gas, marine
-
 High cut models:
 - 23281 black and brown, CE EN 20345:2011 S3 SRC, Type: High Cut, Model: Pull-on, Size: 2-14 (UK) or 35-48 (EU), Upper: Water Resistant Leather, Lining: Cambrelle®, Outsole: Direct Injection Polyurethane, Suitable for Petrochemical, oil & gas, marine
 - 23681 black and brown, CE EN 20345:2011 S3 SRC, Type: High Cut, Model: zipper, Size: 2-14 (UK) or 35-48 (EU), Upper: Water Resistant Leather, Lining: Cambrelle®, Outsole: Direct Injection Polyurethane, Suitable for Petrochemical, oil & gas, marine
 - 23381 black and brown, CE EN 20345:2011 S3 SRC, Type: High Cut, Model: lace, Size: 2-14 (UK) or 35-48 (EU), Upper: Water Resistant Leather, Lining: Cambrelle®, Outsole: Direct Injection Polyurethane, Suitable for Mining, plantations, oil & gas
-
 if customers ask for lowcut, midcut or highcut models give them all models including their decription in a list like described here. 
 Then ask which models they would like to know more about.
-
 Accessories:
 - Socks
 - Shoe Guard
 - T-shirt
 - Mouse pad
-
 Information about the models you use during the conversation:
 - Models to be used in wet and waterproof environments are the mid and high cut models, not the low cut.
 - 21281: This model is designed to provide you with extra comfort during those long working hours.
 - 21981: A general purpose and well ventilated model with an industrial grade Velcro strap for added functionality.
   Improved ventilation to maintain comfort for workers in hot environments.
-
 Safety ratings:
 - Indonesia Rating: SNI 7079-2009
 - Singapore Rating: SS 513
 - China Rating: GB 21148
 - Malaysia Rating: Sirim
 - Other: As/NZS 2210.3.2019 and OSHC
-
 Information about direct injection to use:
 Direct injection is the process where the PU is directly injected into the mold as opposed to glued to the upper of the shoe. 
 This ensures a better bond and is of higher quality than non-direct injection.
-
 Warranty information:
 Nitti Safety Footwear is warranted for six (6) months from the date of invoice by Nitti to its distributors
 against defects in materials and/or workmanship when used under normal conditions for its intended purpose.
-
 Return policy:
 As a requirement of the warranty mentioned above, the purchaser must return the footwear to Nitti for assessment together with proof of purchase or receipt.
 Following assessment, if Nitti determines that the footwear is defective as the result of normal use, Nitti will replace the footwear.
-
 Warranty information:
 Nitti Safety Footwear is warranted for six (6) months from the date of invoice by Nitti to its distributors against defects in materials and/or workmanship when used under normal conditions for its intended purpose.
 If your shoes are defective, return them with proof of purchase to Nitti or an Authorized distributor for assessment.
@@ -96,7 +222,6 @@ We offer replacements, not refunds.
 The warranty is valid internationally under the stated conditions.
 If you have lost your receipt, the manufacturing date at the bottom of the sole will be decisive. 
 If one side is damaged then both shoes will be replaced.
-
 Boot care:
 1. Do not store your boots in direct sunlight. Always air-dry your boots after use and store them in a cool, dry, and well-ventilated place.
 2. Clean and polish your boots regularly with wax to enhance durability. Be sure to rinse your boots with water after contact with cement. 
@@ -126,16 +251,13 @@ def get_coordinates(postal_code):
 def find_nearest_store(postal_code):
     if not validate_postal(postal_code):
         return "Invalid postal code format."
-
     user_coords = get_coordinates(postal_code)
     if not user_coords:
         return "Could not find location."
-
     nearest_store = min(
         stores.items(),
         key=lambda store: geodesic(user_coords, store[1]["coordinates"]).kilometers
     )
-
     store_name, store_data = nearest_store
     return f"Nearest store: {store_name} ({store_data['address']}, Tel: {store_data['tel']}, Distance: {geodesic(user_coords, store_data['coordinates']).kilometers:.2f} km)"
 
@@ -309,7 +431,7 @@ stores = {
     }
 }
 
-# ✅ Inject Store Locations into Chat Context
+# Inject Store Locations into Chat Context (Original Code)
 if "store_context" not in st.session_state:
     store_info = "\n".join(
         f"{name}: 📍 {info['address']}, 📞 {info['tel']}"
@@ -319,35 +441,27 @@ if "store_context" not in st.session_state:
         {"role": "system", "content": f"The available store locations are:\n{store_info}"}
     ]
 
-# ✅ Ensure chatbot context includes store details
 if "chat_context" not in st.session_state:
     st.session_state.chat_context = [
         {'role': 'system', 'content': "You are CustomerserviceBot for Nitti Safety Footwear. You assist with store locations and safety footwear inquiries."}
     ] + st.session_state.store_context
 
-    
-# ✅ OpenAI communication function
+# OpenAI communication function (Original Code)
 def get_completion_from_messages(user_messages, model="gpt-3.5-turbo", temperature=0):
     client = openai.OpenAI()
-
     messages = st.session_state.chat_context + user_messages
-
-    # ✅ Ensure chatbot prioritizes store locations when asked
     if any(kw in user_messages[-1]["content"].lower() for kw in ["store", "nearest", "location", "buy", "address"]):
         store_info = "\n".join(
             f"{name}: 📍 {info['address']}, 📞 {info['tel']}"
             for name, info in stores.items()
         )
         messages.append({"role": "system", "content": f"Here are the store locations:\n{store_info}"})
-
     response = client.chat.completions.create(model=model, messages=messages, temperature=temperature)
-    
-    return response.choices[0].message.content  # ✅ Now correctly inside the function
+    return response.choices[0].message.content
 
-
-
-
-# ✅ User Details Input
+# ===========================
+# User Details Input (Original Code)
+# ===========================
 st.title("Nitti Safety Footwear Chatbot")
 st.markdown("📢 **Enter your contact details before chatting:**")
 
@@ -356,7 +470,6 @@ phone = st.text_input("Enter your phone number:", key="phone_input")
 country = st.selectbox("Select Country", ["Singapore", "Malaysia", "Indonesia"], key="country_dropdown")
 postal = st.text_input("Enter your postal code (Required if in SG):", key="postal_input")
 
-# ✅ Validation function
 def validate_and_start():
     if not is_valid_email(email):
         return "❌ Invalid email."
@@ -364,21 +477,7 @@ def validate_and_start():
         return "❌ Invalid phone number."
     if country == "Singapore" and not validate_postal(postal):
         return "❌ Invalid postal code."
-
     st.session_state.chat_enabled = True
-
- # ✅ Validation function
-def validate_and_start():
-    if not is_valid_email(email):
-        return "❌ Invalid email."
-    if not is_valid_phone(phone):
-        return "❌ Invalid phone number."
-    if country == "Singapore" and not validate_postal(postal):
-        return "❌ Invalid postal code."
-
-    st.session_state.chat_enabled = True
-
-    # ✅ Call `find_nearest_store()` and inject result into chatbot context
     if country == "Singapore":
         store_info = find_nearest_store(postal)
         st.session_state.chat_context.append(
@@ -386,52 +485,44 @@ def validate_and_start():
         )
     else:
         store_info = "No store information available for this country."
+    return f"✅ **Details saved! {store_info}**"
 
-    return f"✅ **Details saved! {store_info}**"  # ✅ Now correctly inside a function
-
-
-# ✅ Run validation on button click
 if st.button("Submit Details", key="submit_button"):
     validation_message = validate_and_start()
     st.markdown(validation_message, unsafe_allow_html=True)
 
-
-# ✅ Display Chat History
+# ===========================
+# CUSTOM UI: Display Chat History with Styled Chat Bubbles
+# (This replaces the original plain text display block.)
+# ===========================
 st.markdown("---")
 st.markdown("**💬 Chat with the Nitti Safety Footwear Bot:**")
 
-for chat in st.session_state.chat_history:
-    if chat["role"] == "user":
-        st.markdown(f"**User:** {chat['content']}")
-    else:
-        st.markdown(f"<div style='background-color: #F6F6F6; padding: 10px; border-radius: 5px;'>"
-                    f"**Nitti CS:** {chat['content']}</div>",
-                    unsafe_allow_html=True)
+with st.container():
+    for chat in st.session_state.chat_history:
+        if chat["role"] == "user":
+            st.markdown(f'<div class="user-message">{chat["content"]}</div>', unsafe_allow_html=True)
+        else:
+            st.markdown(f'<div class="bot-message">{chat["content"]}</div>', unsafe_allow_html=True)
 
-# ✅ Ensure `chat_input_key` is initialized
+# ===========================
+# CUSTOM UI: Chat Input Field with Send Button
+# (Replaces the original plain text input.)
+# ===========================
 if "chat_input_key" not in st.session_state:
     st.session_state.chat_input_key = 0
 
-# ✅ Display chat input field (new key forces refresh)
 if st.session_state.chat_enabled:
     user_input = st.text_input(
-        "Type your message and press Enter:",
+        "Type your message here...",
         key=f"chat_input_{st.session_state.chat_input_key}",
         value=""
     )
 
-   # ✅ Ensure Send button works correctly
     if st.button("Send", key="send_button"):
-        if user_input.strip():  # Only process non-empty input
-            # ✅ Add user message to chat history
+        if user_input.strip():
             st.session_state.chat_history.append({"role": "user", "content": user_input.strip()})
-
-            # ✅ Get chatbot response (Ensure context is included)
             response = get_completion_from_messages(st.session_state.chat_history)
             st.session_state.chat_history.append({"role": "assistant", "content": response})
-
-            # ✅ Instead of modifying `st.session_state["chat_input"]`, increment key to refresh input field
-            st.session_state.chat_input_key += 1  
-
-            # ✅ Force UI update to refresh the input field
+            st.session_state.chat_input_key += 1
             st.rerun()
