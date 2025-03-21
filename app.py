@@ -57,8 +57,8 @@ st.markdown(
     }
     /* User message bubble styling */
     .user-message {
-        background-color: #FFD700; /* bright yellow */
-        color: #000000;
+        background-color: #000000; /* black */
+        color: #ffffff;
         padding: 10px;
         border-radius: 21px;
         margin: 10px 0;
@@ -70,8 +70,8 @@ st.markdown(
     }
     /* Bot message bubble styling */
     .bot-message {
-        background-color: #000000; /* black */
-        color: #ffffff;
+        background-color: #FFD700; /* bright yellow */
+        color: #000000;
         padding: 10px;
         border-radius: 21px;
         margin: 10px 0;
@@ -120,7 +120,7 @@ st.markdown(
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 if "chat_enabled" not in st.session_state:
-    st.session_state.chat_enabled = True  # Set to True to allow input field to appear
+    st.session_state.chat_enabled = False  # Set to True to allow input field to appear
 if "chat_context" not in st.session_state:
     st.session_state.chat_context = [
         {'role': 'system', 'content': """
