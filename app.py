@@ -7,6 +7,9 @@ from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 import base64
 
+# IMPORT the CSV-logging function from log_backend
+from log_backend import save_user_data
+
 # Load environment variables
 _ = load_dotenv(find_dotenv())
 
@@ -448,13 +451,22 @@ def validate_and_start():
     if country == "Singapore" and not validate_postal(postal):
         return "❌ Invalid postal code."
     st.session_state.chat_enabled = True
+    
+       # LOG USER DATA HERE
+    save_user_data(
+        email=email,
+        phone=phone,
+        postal_code=postal,
+        country=country
+    )
+    
     if country == "Singapore":
         store_info = find_nearest_store(postal)
         st.session_state.chat_context.append(
             {"role": "system", "content": f"The nearest store to the user is: {store_info}"}
         )
     else:
-        store_info = "No store information available for this country."
+        store_info = "No store information available for this country."   
     return f"✅ **Details saved! {store_info}**"
 
 if st.button("Submit Details", key="submit_button"):
