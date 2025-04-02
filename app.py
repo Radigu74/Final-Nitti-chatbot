@@ -421,7 +421,7 @@ if "chat_context" not in st.session_state:
 
 # OpenAI communication function (Original Code)
 def get_completion_from_messages(user_messages, model="gpt-3.5-turbo", temperature=0):
-    client = openai.OpenAI()
+    client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
     messages = st.session_state.chat_context + user_messages
     if any(kw in user_messages[-1]["content"].lower() for kw in ["store", "nearest", "location", "buy", "address"]):
         store_info = "\n".join(
