@@ -201,6 +201,11 @@ Boot care:
    Left unattended, cement will damage the leather upper, drying it out and causing cracks to form.
 3. Do not wash your boots. Wet boots should be air-dried naturally at room temperature with the cushion footbed and laces removed and the boots fully opened. 
    Never force dry or use strong detergents or caustic cleaning agents.
+
+The Founding of Nitti
+Nitti was born in 1998 following a preventable accident at the Nitti factory—an incident caused by inferior safety footwear. At a time when other brands dominated the market, Nitti emerged as a true underdog. Determined to prevent such tragedies and inspired by the need for better protection, a team of dedicated industry professionals set out to create safety footwear that combined uncompromising quality with exceptional comfort.
+Fuelled by tenacity and a commitment to customer service, they invested countless hours into research, design, and rigorous testing. Their breakthrough products not only prevented further accidents but also redefined industry standards. Over time, Nitti's unwavering focus on quality, innovation, and responsive support allowed them to gradually gain trust and grow into the market leader they are today.
+This story of resilience and commitment continues to inspire Nitti's mission—ensuring that every pair of safety shoes not only meets the highest standards but also truly protects those who wear them.
 """} ]
 
 # ✅ Validation functions
