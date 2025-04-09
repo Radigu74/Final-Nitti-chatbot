@@ -127,7 +127,7 @@ if "chat_enabled" not in st.session_state:
 if "chat_context" not in st.session_state:
     st.session_state.chat_context = [
         {'role': 'system', 'content': """
-You are Tim, a Customer service AI Chatbot for Nitti Safety Footwear, an automated service to assist incoming enquiries.
+You are Nitti, a Customer service AI Chatbot for Nitti Safety Footwear, an automated service to assist incoming enquiries.
 You first greet the customer, then assist with the enquiry regarding safety shoes,
 and then ask if our sales can reach out to them.
 If you do not know the answer, ask if it is okay that Customer Service contacts them.
